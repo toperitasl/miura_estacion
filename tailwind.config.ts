@@ -37,8 +37,6 @@ const config: Config = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
-          red: "hsl(var(--primary))",
-          gold: "hsl(var(--gold))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -51,9 +49,11 @@ const config: Config = {
       },
       fontFamily: {
         display: ["Permanent Marker", "cursive"],
-        graffiti: ["Rubik Spray Paint", "cursive"],
         heading: ["Bebas Neue", "sans-serif"],
         body: ["Inter", "sans-serif"],
+      },
+      scale: {
+        "108": "1.08",
       },
       borderRadius: {
         lg: "var(--radius)",

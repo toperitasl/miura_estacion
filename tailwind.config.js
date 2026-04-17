@@ -45,6 +45,14 @@ var config = {
                     foreground: "hsl(var(--card-foreground))",
                 },
             },
+            fontFamily: {
+                display: ["Permanent Marker", "cursive"],
+                heading: ["Bebas Neue", "sans-serif"],
+                body: ["Inter", "sans-serif"],
+            },
+            scale: {
+                "108": "1.08",
+            },
             borderRadius: {
                 lg: "var(--radius)",
                 md: "calc(var(--radius) - 2px)",

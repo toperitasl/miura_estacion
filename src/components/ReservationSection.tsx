@@ -1,76 +1,81 @@
 import { motion } from "framer-motion";
+import { Reveal, JuicyButton } from "@/animations";
 
 const ReservationSection = () => {
   return (
     <section id="reservas" className="relative py-32 px-6 overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-card to-background" />
       <div className="absolute inset-0 bg-noise" />
-      <div className="absolute inset-0 stripe-accent pointer-events-none" />
 
-      {/* Vertical accent lines */}
-      <motion.div
-        className="absolute top-0 left-1/4 w-px h-full bg-primary/5"
-        animate={{ opacity: [0.03, 0.08, 0.03] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute top-0 right-1/3 w-px h-full bg-primary/5"
-        animate={{ opacity: [0.05, 0.1, 0.05] }}
-        transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-      />
+      {/* Líneas verticales de ambiente */}
+      {[1 / 4, 1 / 2, 3 / 4].map((pos, i) => (
+        <motion.div
+          key={i}
+          className="absolute top-0 w-px h-full bg-primary/5"
+          style={{ left: `${pos * 100}%` }}
+          animate={{ opacity: [0.03, 0.09, 0.03] }}
+          transition={{ duration: 4 + i, repeat: Infinity, delay: i * 1.2 }}
+        />
+      ))}
 
       <div className="max-w-3xl mx-auto relative z-10">
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className="font-heading text-sm tracking-[0.4em] uppercase text-primary">No esperes mas</span>
-          <h2 className="text-5xl md:text-8xl font-graffiti text-foreground mt-4 leading-tight">
+        <Reveal className="text-center">
+          <span className="font-heading text-sm tracking-[0.4em] uppercase text-primary/70">
+            Reserva
+          </span>
+          <h2 className="text-5xl md:text-7xl font-display text-glow mt-4 leading-none">
             RESERVA TU MESA
           </h2>
-          <div className="divider-red mt-8 mb-10" />
+          <div className="divider-gold mt-8 mb-10" />
 
-          <p className="text-foreground/70 font-body text-lg md:text-xl font-light max-w-lg mx-auto">
-            No te quedes sin tu sitio. Las mejores noches empiezan con una buena reserva.
+          <p className="text-foreground/60 font-body text-lg md:text-xl font-light max-w-lg mx-auto">
+            No te quedes sin sitio. Las mejores noches empiezan con una buena reserva.
           </p>
+        </Reveal>
 
-          {/* Urgency badge */}
+        <Reveal delay={0.15} className="text-center">
           <motion.div
-            className="inline-flex items-center gap-3 mt-8 px-6 py-3 border border-primary/40 bg-primary/5"
-            style={{ clipPath: "polygon(2% 0%, 100% 0%, 98% 100%, 0% 100%)" }}
-            animate={{ borderColor: ["hsl(355 75% 45% / 0.3)", "hsl(355 75% 45% / 0.6)", "hsl(355 75% 45% / 0.3)"] }}
+            className="inline-flex items-center gap-3 mt-8 px-6 py-3"
+            style={{
+              border: "1px solid",
+              borderColor: "hsl(45 100% 50% / 0.3)",
+              clipPath: "polygon(2% 0%, 100% 0%, 98% 100%, 0% 100%)",
+            }}
+            animate={{
+              borderColor: [
+                "hsl(45 100% 50% / 0.2)",
+                "hsl(45 100% 50% / 0.6)",
+                "hsl(45 100% 50% / 0.2)",
+              ],
+            }}
             transition={{ duration: 2.5, repeat: Infinity }}
           >
-            <span className="w-2 h-2 bg-primary animate-pulse" />
+            <span className="w-2 h-2 bg-primary animate-pulse flex-shrink-0" />
             <span className="text-primary font-heading text-sm tracking-[0.2em] uppercase">
               Plazas limitadas los fines de semana
             </span>
           </motion.div>
+        </Reveal>
 
-          {/* Main CTA */}
-          <motion.div
-            className="mt-12"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+        <Reveal delay={0.25} className="text-center mt-12">
+          <JuicyButton
+            size="lg"
+            onClick={() => (window.location.href = "tel:+34621141306")}
+            className="text-lg md:text-xl"
           >
-            <a href="tel:+34621141306" className="btn-trap text-2xl md:text-3xl py-6 px-16">
-              RESERVAR AHORA
-            </a>
-          </motion.div>
+            Reservar Ahora
+          </JuicyButton>
 
-          <p className="mt-10 text-muted-foreground font-body text-sm">
-            Llama directamente al{" "}
-            <a href="tel:+34621141306" className="text-accent-gold hover:text-primary font-semibold transition-colors duration-300">
+          <p className="mt-8 text-muted-foreground font-body text-sm">
+            Llama al{" "}
+            <a
+              href="tel:+34621141306"
+              className="text-primary hover:text-white font-medium transition-colors duration-300"
+            >
               +34 621 14 13 06
             </a>
           </p>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

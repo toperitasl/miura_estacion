@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { Reveal, StaggerList } from "@/animations";
 
 const reasons = [
   {
@@ -8,7 +8,7 @@ const reasons = [
   },
   {
     num: "02",
-    title: "Experiencia nocturna",
+    title: "Ambiente de noche",
     desc: "Buena musica y una terraza donde las horas pasan sin darte cuenta.",
   },
   {
@@ -26,46 +26,42 @@ const reasons = [
 const WhySection = () => {
   return (
     <section className="relative py-28 px-6 bg-noise bg-gradient-dark overflow-hidden">
-      {/* Top accent line */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
       <div className="max-w-5xl mx-auto relative z-10">
-        <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <span className="font-heading text-sm tracking-[0.4em] uppercase text-primary">Por que este sitio</span>
-          <h2 className="text-5xl md:text-7xl font-graffiti text-foreground mt-4">
-            NO ES UN SITIO MAS
+        <Reveal className="text-center mb-20">
+          <span className="font-heading text-sm tracking-[0.4em] uppercase text-primary/70">
+            Por que elegirnos
+          </span>
+          <h2 className="text-5xl md:text-7xl font-display leading-none mt-4">
+            <span className="text-glow">NO ES</span>{" "}
+            <span className="text-stroke font-display">UN SITIO MAS</span>
           </h2>
-          <div className="divider-red mt-8" />
-        </motion.div>
+          <div className="divider-gold mt-8" />
+        </Reveal>
 
-        <div className="grid md:grid-cols-2 gap-5">
-          {reasons.map((r, i) => (
-            <motion.div
-              key={r.title}
-              className="card-brutal p-8 group"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-            >
+        <StaggerList
+          items={reasons}
+          getKey={(r) => r.num}
+          className="grid md:grid-cols-2 gap-4"
+          renderItem={(r) => (
+            <div className="card-brutal p-8 group h-full">
               <div className="flex gap-5 items-start">
-                {/* Number */}
-                <span className="font-graffiti text-5xl text-primary/20 group-hover:text-primary/40 transition-colors duration-500 leading-none">
+                <span className="font-display text-6xl text-primary/15 group-hover:text-primary/30 transition-colors duration-500 leading-none select-none flex-shrink-0">
                   {r.num}
                 </span>
                 <div>
-                  <h3 className="font-heading text-xl text-accent-gold tracking-[0.15em] uppercase">{r.title}</h3>
-                  <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed">{r.desc}</p>
+                  <h3 className="font-heading text-xl text-primary tracking-[0.15em] uppercase">
+                    {r.title}
+                  </h3>
+                  <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed font-light">
+                    {r.desc}
+                  </p>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          )}
+        />
       </div>
     </section>
   );
