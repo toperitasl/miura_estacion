@@ -14,7 +14,7 @@ import cartaP3 from "@/assets/cartaterceraparte.PNG";
 import cartaP4 from "@/assets/cartacuartaparte.PNG";
 import cartaP5 from "@/assets/cartaquintaparte.PNG";
 import cartaP6 from "@/assets/cartasextaparte.PNG";
-import { ChevronPattern, LipsIcon, BullHead } from "@/components/brand/BrandIcons";
+import { ChevronPattern } from "@/components/brand/BrandIcons";
 
 const cartaPages = [
   { src: cartaP0, label: "Para Comenzar" },
@@ -38,8 +38,14 @@ const usePreloadImages = (srcs: string[]) => {
 
 const CartaShowcase = () => {
   const [active, setActive] = useState(0);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
+  const zoomRef = useRef<HTMLDivElement>(null);
 
   usePreloadImages(cartaPages.map((p) => p.src));
 
@@ -67,6 +73,56 @@ const CartaShowcase = () => {
   const goPrev = () => setActive((p) => (p - 1 + cartaPages.length) % cartaPages.length);
   const goNext = () => setActive((p) => (p + 1) % cartaPages.length);
 
+  const openZoom = () => {
+    setZoomOpen(true);
+    setZoomLevel(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const closeZoom = () => {
+    setZoomOpen(false);
+    setZoomLevel(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const handleZoom = (event: React.WheelEvent) => {
+    event.preventDefault();
+    const delta = event.deltaY > 0 ? -0.1 : 0.1;
+    const newZoom = Math.max(0.5, Math.min(3, zoomLevel + delta));
+    setZoomLevel(newZoom);
+  };
+
+  const handleMouseDown = (event: React.MouseEvent) => {
+    if (zoomLevel > 1) {
+      setIsDragging(true);
+      setDragStart({ x: event.clientX - panOffset.x, y: event.clientY - panOffset.y });
+    }
+  };
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (isDragging && zoomLevel > 1) {
+      setPanOffset({
+        x: event.clientX - dragStart.x,
+        y: event.clientY - dragStart.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (zoomOpen) {
+      window.addEventListener('mouseup', handleGlobalMouseUp);
+      return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
+    }
+  }, [zoomOpen]);
+
   return (
     <section
       ref={sectionRef}
@@ -87,12 +143,6 @@ const CartaShowcase = () => {
       </motion.div>
 
       {/* Decorative icons */}
-      <div className="absolute top-16 right-8 text-primary/18 hidden lg:block soft-float" aria-hidden="true">
-        <LipsIcon className="w-28 h-18" />
-      </div>
-      <div className="absolute bottom-20 left-6 text-primary/13 hidden lg:block soft-float-reverse" aria-hidden="true">
-        <BullHead className="w-24 h-24" />
-      </div>
       <div className="absolute top-8 left-2 text-primary/28 pointer-events-none soft-float" aria-hidden="true">
         <ChevronPattern className="w-40 h-9" />
       </div>
@@ -179,17 +229,20 @@ const CartaShowcase = () => {
                 <motion.div
                   key={active}
                   className="carta-viewer-slide"
-                  initial={{ opacity: 0, x: 24 }}
+                  initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -24, position: "absolute" as const }}
-                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  exit={{ opacity: 0, x: -20, position: "absolute" as const }}
+                  transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
                   style={{ transform: "translateZ(28px)" }}
                 >
                   <img
                     src={cartaPages[active].src}
                     alt={cartaPages[active].label}
-                    className="w-full h-full object-contain object-top select-none"
+                    className="w-full h-full object-contain object-top select-none cursor-zoom-in"
+                    loading="eager"
+                    decoding="async"
                     draggable={false}
+                    onClick={openZoom}
                   />
 
                   {/* Glare sweep */}
@@ -197,7 +250,7 @@ const CartaShowcase = () => {
                     className="absolute inset-0 pointer-events-none"
                     initial={{ x: "-100%", opacity: 0.55 }}
                     animate={{ x: "220%", opacity: 0 }}
-                    transition={{ duration: 0.65, ease: "easeOut" }}
+                    transition={{ duration: 0.45, ease: "easeOut" }}
                     style={{
                       background:
                         "linear-gradient(108deg, transparent 38%, rgba(255,195,0,0.22) 50%, transparent 62%)",
@@ -307,6 +360,76 @@ const CartaShowcase = () => {
             </motion.button>
           ))}
         </div>
+
+        <AnimatePresence>
+          {zoomOpen && (
+            <motion.div
+              className="fixed inset-0 z-[120] flex items-center justify-center bg-black/95 p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={closeZoom}
+            >
+              <motion.div
+                ref={zoomRef}
+                className="relative max-h-[90vh] max-w-[90vw] overflow-hidden cursor-grab active:cursor-grabbing"
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                onClick={(event) => event.stopPropagation()}
+                onWheel={handleZoom}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                style={{
+                  cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default'
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={closeZoom}
+                  className="absolute top-3 right-3 z-20 rounded-full border border-white/20 bg-black/70 p-2 text-white shadow-lg shadow-black/40 transition hover:bg-white/10"
+                  aria-label="Cerrar vista ampliada"
+                >
+                  ✕
+                </button>
+                {zoomLevel > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setZoomLevel(1);
+                      setPanOffset({ x: 0, y: 0 });
+                    }}
+                    className="absolute top-3 right-16 z-20 rounded-full border border-white/20 bg-black/70 px-3 py-2 text-white shadow-lg shadow-black/40 transition hover:bg-white/10 text-sm"
+                    aria-label="Resetear zoom"
+                  >
+                    100%
+                  </button>
+                )}
+                <motion.img
+                  src={cartaPages[active].src}
+                  alt={`Ampliación de ${cartaPages[active].label}`}
+                  className="max-h-[90vh] max-w-[90vw] object-contain select-none"
+                  draggable={false}
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${panOffset.x / zoomLevel}px, ${panOffset.y / zoomLevel}px)`,
+                    transformOrigin: 'center center',
+                    transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+                  }}
+                />
+                <div className="absolute bottom-3 left-3 bg-black/70 text-white px-3 py-1 rounded text-sm">
+                  Zoom: {Math.round(zoomLevel * 100)}% | Rueda para zoom, arrastra para mover
+                </div>
+                <div className="mt-3 text-center text-sm text-white/70">
+                  Rueda del mouse para zoom • Arrastra para mover • Esc o click fuera para cerrar
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* CTA */}
         <motion.div

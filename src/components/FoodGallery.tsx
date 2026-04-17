@@ -10,7 +10,6 @@ const EUR = "\u20AC";
 */
 const brutalBlocks = [
   {
-    emoji: "🍴",
     title: "Para Comenzar",
     subtitle: "Clásicos para abrir boca",
     picks: [
@@ -20,7 +19,6 @@ const brutalBlocks = [
     ],
   },
   {
-    emoji: "🍔",
     title: "Bocados Brutales",
     subtitle: "Lo que más se pide",
     picks: [
@@ -30,7 +28,6 @@ const brutalBlocks = [
     ],
   },
   {
-    emoji: "🔥",
     title: "Brasa y Olla",
     subtitle: "Fuego y melosidad",
     picks: [
@@ -40,7 +37,6 @@ const brutalBlocks = [
     ],
   },
   {
-    emoji: "🍷",
     title: "Vinos y Dulce Final",
     subtitle: "Copa, postre y cierre",
     picks: [
@@ -97,19 +93,6 @@ const FoodGallery = () => {
                   </h3>
                   <p className="text-foreground/60 mt-1 text-base md:text-lg">{block.subtitle}</p>
                 </div>
-
-                {/* Emoji grande — nítido en cualquier pantalla */}
-                <motion.div
-                  className="flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-3xl leading-none select-none"
-                  whileHover={{
-                    scale: 1.18,
-                    rotate: [0, -8, 8, 0],
-                    transition: { duration: 0.5 },
-                  }}
-                  aria-hidden="true"
-                >
-                  {block.emoji}
-                </motion.div>
               </div>
 
               <ul className="mt-5 space-y-2.5">

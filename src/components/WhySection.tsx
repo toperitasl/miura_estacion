@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform, animate } from "framer-moti
 import cartaP1 from "@/assets/cartaprimeraparte.PNG";
 import cartaP4 from "@/assets/cartacuartaparte.PNG";
 import cartaP5 from "@/assets/cartaquintaparte.PNG";
-import { BullHead, ChevronPattern, SpraySplat } from "@/components/brand/BrandIcons";
+import { ChevronPattern, SpraySplat } from "@/components/brand/BrandIcons";
 import { Reveal, JuicyButton } from "@/animations";
 
 /* ─────────────────────────────────────────
@@ -124,15 +124,6 @@ const WhySection = () => {
           width: "180px",
         }}
       />
-
-      {/* Toro Miura flotante gigante al fondo */}
-      <motion.div
-        className="absolute right-1/2 top-1/2 -translate-y-1/2 translate-x-1/2 text-primary/[0.04] pointer-events-none"
-        style={{ y: bullY, scale: bullScale }}
-        aria-hidden="true"
-      >
-        <BullHead className="w-[600px] h-[540px]" />
-      </motion.div>
 
       {/* Chevrons y spray */}
       <div
