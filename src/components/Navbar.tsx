@@ -34,8 +34,8 @@ const Navbar = () => {
   };
 
   const links = [
-    { label: "Carta", id: "carta" },
-    { label: "Nosotros", id: "experiencia" },
+    { label: "Carta", id: "carta-real" },
+    { label: "Manifiesto", id: "manifiesto" },
     { label: "Reservar", id: "reservas" },
     { label: "Ubicacion", id: "ubicacion" },
   ];

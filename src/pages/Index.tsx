@@ -1,9 +1,8 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import ExperienceSection from "@/components/ExperienceSection";
+import CartaMarquee from "@/components/CartaMarquee";
 import FoodGallery from "@/components/FoodGallery";
 import CartaShowcase from "@/components/CartaShowcase";
-import MenuSection from "@/components/MenuSection";
 import WhySection from "@/components/WhySection";
 import ReservationSection from "@/components/ReservationSection";
 import LocationSection from "@/components/LocationSection";
@@ -16,10 +15,9 @@ const Index = () => {
     <main className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
       <HeroSection />
-      <ExperienceSection />
+      <CartaMarquee />
       <FoodGallery />
       <CartaShowcase />
-      <MenuSection />
       <WhySection />
       <ReservationSection />
       <LocationSection />

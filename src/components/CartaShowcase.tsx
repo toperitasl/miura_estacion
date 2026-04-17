@@ -1,5 +1,12 @@
-import { useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, type MouseEvent } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import cartaP0 from "@/assets/cartapartecero.PNG";
 import cartaP1 from "@/assets/cartaprimeraparte.PNG";
 import cartaP2 from "@/assets/cartasegundaparte.PNG";
@@ -23,9 +30,30 @@ const CartaShowcase = () => {
   const [active, setActive] = useState(0);
   const [hovered, setHovered] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const titleY = useTransform(scrollYProgress, [0, 1], ["0px", "-40px"]);
+
+  // Tilt 3D siguiendo el ratón (MotionValues → 0 re-renders)
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const smoothX = useSpring(mx, { stiffness: 220, damping: 22, mass: 0.7 });
+  const smoothY = useSpring(my, { stiffness: 220, damping: 22, mass: 0.7 });
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-10, 10]);
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [8, -8]);
+
+  const handleTilt = (e: MouseEvent<HTMLDivElement>) => {
+    if (!viewerRef.current) return;
+    const r = viewerRef.current.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
+  };
+
+  const resetTilt = () => {
+    mx.set(0);
+    my.set(0);
+  };
 
   return (
     <section
@@ -118,7 +146,19 @@ const CartaShowcase = () => {
           </div>
 
           {/* Main carta viewer */}
-          <div className="relative carta-main-viewer">
+          <motion.div
+            ref={viewerRef}
+            onMouseMove={handleTilt}
+            onMouseLeave={resetTilt}
+            className="relative carta-main-viewer"
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d",
+              transformPerspective: 1200,
+              willChange: "transform",
+            }}
+          >
             {/* Corner decorations */}
             <div className="corner-deco corner-deco--tl" />
             <div className="corner-deco corner-deco--tr" />
@@ -136,7 +176,7 @@ const CartaShowcase = () => {
                 exit={{ opacity: 0, scale: 1.04, rotateY: 8 }}
                 transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="relative overflow-hidden"
-                style={{ perspective: "1000px" }}
+                style={{ perspective: "1000px", transform: "translateZ(30px)" }}
               >
                 <img
                   src={cartaPages[active].src}
@@ -201,7 +241,7 @@ const CartaShowcase = () => {
                 NEXT ›
               </motion.button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Thumbnail strip — right */}
           <div className="hidden lg:flex flex-col gap-3 pt-8">
