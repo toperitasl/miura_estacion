@@ -1,6 +1,6 @@
-import { motion, useReducedMotion } from "framer-motion";
+﻿import { motion, useReducedMotion } from "framer-motion";
 import heroFood from "@/assets/hero-food.jpg";
-import { BeerGlass, BullHead, ChevronPattern, DessertIcon, ForkKnife, LipsIcon, WineGlass } from "@/components/brand/BrandIcons";
+import { ChevronPattern } from "@/components/brand/BrandIcons";
 import { HeroStagger, HeroItem, JuicyButton } from "@/animations";
 
 const HeroSection = () => {
@@ -23,65 +23,6 @@ const HeroSection = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/92 via-background/80 to-background" />
       </div>
-
-      {/* Floating brand icons from la carta — ambient layer */}
-      {!reduceMotion && (
-        <>
-          <motion.div
-            className="absolute top-[18%] left-[6%] text-primary/18 pointer-events-none hidden md:block"
-            animate={{ y: [0, -14, 0], rotate: [0, 8, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            aria-hidden="true"
-          >
-            <LipsIcon className="w-24 h-16" />
-          </motion.div>
-
-          <motion.div
-            className="absolute top-[30%] right-[5%] text-primary/15 pointer-events-none hidden lg:block"
-            animate={{ y: [0, -10, 0], rotate: [0, -6, 0] }}
-            transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            aria-hidden="true"
-          >
-            <BullHead className="w-20 h-20" />
-          </motion.div>
-
-          <motion.div
-            className="absolute bottom-[22%] left-[4%] text-primary/12 pointer-events-none hidden lg:block"
-            animate={{ y: [0, -8, 0], rotate: [0, 5, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            aria-hidden="true"
-          >
-            <ForkKnife className="w-16 h-24" />
-          </motion.div>
-
-          <motion.div
-            className="absolute top-[55%] right-[8%] text-primary/12 pointer-events-none hidden xl:block"
-            animate={{ y: [0, -12, 0], rotate: [0, -8, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-            aria-hidden="true"
-          >
-            <WineGlass className="w-12 h-16" />
-          </motion.div>
-
-          <motion.div
-            className="absolute top-[12%] right-[20%] text-primary/10 pointer-events-none hidden xl:block"
-            animate={{ y: [0, -6, 0], rotate: [0, 4, 0] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-            aria-hidden="true"
-          >
-            <DessertIcon className="w-14 h-16" />
-          </motion.div>
-
-          <motion.div
-            className="absolute bottom-[30%] right-[3%] text-primary/10 pointer-events-none hidden xl:block"
-            animate={{ y: [0, -10, 0], rotate: [0, -5, 0] }}
-            transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-            aria-hidden="true"
-          >
-            <BeerGlass className="w-14 h-16" />
-          </motion.div>
-        </>
-      )}
 
       {/* Decoración lateral */}
       <div

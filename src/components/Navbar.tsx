@@ -42,12 +42,12 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 right-0 z-[60] will-change-transform ${
+      className={`fixed top-0 left-0 right-0 z-[100] will-change-transform isolation-isolate ${
         scrolled || menuOpen
           ? "bg-background/90 backdrop-blur-xl border-b border-primary/15 shadow-[0_8px_18px_rgba(0,0,0,0.35)]"
           : "bg-transparent"
       }`}
-      style={{ transition: "background-color 300ms, border-color 300ms, box-shadow 300ms" }}
+      style={{ transition: "background-color 300ms, border-color 300ms, box-shadow 300ms", isolation: "isolate" }}
       initial={{ y: -90 }}
       animate={{ y: 0 }}
       transition={{ duration: reduceMotion ? 0.2 : 0.45, delay: 0.1 }}
@@ -110,7 +110,7 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden fixed inset-0 top-[64px] bg-background/97 backdrop-blur-xl z-[55] flex flex-col items-center justify-center overflow-y-auto"
+            className="md:hidden fixed inset-0 top-[64px] bg-background/97 backdrop-blur-xl z-[90] flex flex-col items-center justify-center overflow-y-auto"
           >
             <div className="flex flex-col items-center gap-6 py-12">
               {links.map((l, i) => (

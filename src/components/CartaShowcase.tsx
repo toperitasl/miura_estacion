@@ -31,7 +31,7 @@ const CartaShowcase = () => {
     <section
       ref={sectionRef}
       id="carta-real"
-      className="relative overflow-hidden py-28 px-4 md:px-8 bg-gradient-dark bg-noise"
+      className="relative py-28 px-4 md:px-8 bg-gradient-dark bg-noise"
     >
       {/* Scanline overlay */}
       <div className="scanlines-overlay pointer-events-none" aria-hidden="true" />
